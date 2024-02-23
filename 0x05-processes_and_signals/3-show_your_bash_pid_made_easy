@@ -1,7 +1,6 @@
 #!/usr/bin/env bash
 
-#Get the list of processes from the /proc directory
-# filter processes whose aname contain the word bash
-#extract and display the P{ID along with the process name
+#Displays the PID along with process name of 
+#+ processes whose name contains the word bash
 
 pgrep bash -l
