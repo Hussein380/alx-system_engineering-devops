@@ -3,4 +3,4 @@
 #Displays the PID along with process name of 
 #+ processes whose name contains the word bash
 
-pgrep bash -l
+pgrep bash -1

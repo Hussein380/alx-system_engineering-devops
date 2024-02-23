@@ -4,4 +4,4 @@
 
 #use ps command to list all proceses with aditional information
 #filter line containing the word "bash" using grep
-ps aux | grep bash
+ps -aux | grep bash
