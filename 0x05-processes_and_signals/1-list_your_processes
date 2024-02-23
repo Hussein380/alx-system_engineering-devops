@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+#This script displays a list of currently running process
+#It shows all processes, for all users, including those which might have a TTY
+#It displays the process hierarchy
+#usage: ./list_processes.sh
+
+#Displays header
+#echo "USER       PID %CPU %MEM    VSZ   RSS TTY      STAT START   TIME COMMAND"
+
+#use ps command to list all process with additional information
+ps aux --forest | grep -v "$0" | awk '{printf "%-10s %5s %4s %4s %6s %-8s %4s %s %s",$1,$2,$3,$4,$5,$6,$7,$8,$9; for(i=10; i<=NF;++i) printf " %s" ,$i; printf "\n"}'
