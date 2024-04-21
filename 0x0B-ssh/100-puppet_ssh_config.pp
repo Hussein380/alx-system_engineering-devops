@@ -1,7 +1,7 @@
 # using puppet to make chnages to the default ssh config file
 # so that one can connect to a server withough typing a password
 
-#include lib
+include stdlib
 
 file_line { 'SSH Private Key':
 	path               => '/etc/ssh/ssh_config',
