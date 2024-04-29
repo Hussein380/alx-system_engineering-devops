@@ -1,0 +1,65 @@
+#!/usr/bin/env bash
+# install load balancer
+
+# Displaying update message
+echo -e "Updating and doing some minor checks...\n"
+
+# Function to install packages if not installed already
+function install(){
+  command -v "$1" &> /dev/null
+
+  # Check if the command is not available
+  if [ $? -ne 0 ]; then
+	  echo -e "  Installing: $1\n"
+	  # Update package list and install the package
+          sudo apt-get update -y -qq  && \
+		  sudo apt-get install -y "$1" -qq
+          echo -e "\n"
+  else
+          # Command is already installed
+          echo -e "  ${1} is already installed.\n"
+  fi
+}
+
+# Call install function to install haproxy
+install haproxy
+
+echo -e "\nSetting up some minor stuff.\n"
+
+# Backup default server config file
+sudo cp /etc/haproxy/haproxy.cfg haproxy_default.backup
+
+# Define the new server configuraration
+server_config=\
+"
+defaults
+  mode http
+  timeout client 15s
+  timeout connect 10s
+  timeout server 10s
+  timeout http-request 10s
+
+frontend huzni-tech-frontend
+    bind *:80
+    default_backend huzni-tech-backend
+
+backend huzni-tech-backend
+    balance roundrobin
+    server 531649-web-01 52.87.252.111:80 check
+    server 531649-web-02 54.237.72.25:80 check
+"
+# Apply server configuration
+echo "$server_config" | sudo dd status=none of=/etc/haproxy/haproxy.cfg
+
+# enable haproxy to be started by init script
+echo "ENABLED=1" | sudo dd status=none of=/etc/default/haproxy
+
+echo "configured - Roundrobin On web-01 & web-02"
+
+# Check if haproxy is running and start /restart accordingly
+if [ "$(pgrep -c haproxy)" -le 0 ]; then
+	sudo service haproxy start
+else
+	sudo service haproxy restart
+fi
+
