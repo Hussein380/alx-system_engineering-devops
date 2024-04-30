@@ -9,10 +9,8 @@ echo -e "Updating and doing minor checks...\n"
 
 # Function to check if a command is available, and if not, install it
 function install(){
-  command -v "$1" &> /dev/null
-
   # Check if the command is not available
-  if [ $? -ne 0 ]; then
+  if ! command -v "$1" &> /dev/null; then
 	  echo -e "  Installing: $1$\n"
 	  # Update package repositories and install the specified package
           sudo apt-get update -y -qq  && \
