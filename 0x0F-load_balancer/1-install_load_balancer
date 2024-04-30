@@ -6,10 +6,8 @@ echo -e "Updating and doing some minor checks...\n"
 
 # Function to install packages if not installed already
 function install(){
-  command -v "$1" &> /dev/null
-
   # Check if the command is not available
-  if [ $? -ne 0 ]; then
+  if ! command -v "$1" &> /dev/null; then
 	  echo -e "  Installing: $1\n"
 	  # Update package list and install the package
           sudo apt-get update -y -qq  && \
