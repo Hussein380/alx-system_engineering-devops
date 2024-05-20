@@ -2,7 +2,7 @@
 
 This project involves using a REST API to gather and display information about an employee's TODO list progress. The script is written in Python and makes use of the `requests` library to interact with the API.
 
-## Requirements
+# Requirements
 
 - Python 3.8.5
 - `requests` library
